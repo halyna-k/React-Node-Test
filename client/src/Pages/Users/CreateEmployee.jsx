@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createEmployee } from "../../redux/action/user";
+import validator from "email-validator";
 import { useNavigate } from "react-router-dom";
 import Topbar from "./Topbar";
 import {
@@ -35,6 +36,14 @@ const CreateUser = ({ open, setOpen, scroll }) => {
     phone: "",
     email: "",
   }
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
 
   //////////////////////////////////////// STATES /////////////////////////////////////
   const [employeeData, setEmployeeData] = useState(initialEmployeeState);
@@ -44,15 +53,40 @@ const CreateUser = ({ open, setOpen, scroll }) => {
   //////////////////////////////////////// FUNCTIONS /////////////////////////////////////
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { firstName, lastName, username, password, phone, email } = employeeData
-    if (!firstName || !lastName || !username || !password || !phone  )
-      return alert("Make sure to provide all the fields")
+
+    if (!validateForm()) return
     dispatch(createEmployee(employeeData, setOpen));
     setEmployeeData(initialEmployeeState)
   };
 
+  const validateForm = () => {
+  const newErrors = {};
+
+  const rules = {
+    firstName: { required: true, min: 3 },
+    lastName: { required: true, min: 3 },
+    username: { required: true, min: 3 },
+    email: { validate: (val) => !val || validator.validate(val), message: "Invalid email" },
+    phone: { required: true, min: 5 },
+    password: { required: true, min: 6 },
+  };
+
+  Object.keys(rules).forEach((field) => {
+    const value = employeeData[field];
+    const rule = rules[field];
+
+    if (rule.required && !value) newErrors[field] = "This field is required";
+    else if (rule.min && value.length < rule.min) newErrors[field] = `Must be at least ${rule.min} characters`;
+    else if (rule.validate && !rule.validate(value)) newErrors[field] = rule.message;
+  });
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
   const handleChange = (field, value) => {
     setEmployeeData((prevFilters) => ({ ...prevFilters, [field]: value, }));
+    setErrors({ ...errors, [field]: "" });
   };
 
   const handleClose = () => {
@@ -93,6 +127,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     fullWidth
                     value={employeeData.firstName}
                     onChange={(e) => handleChange('firstName', e.target.value)}
+                    error={!!errors.firstName}
+                    helperText={errors.firstName}
                   />
                 </td>
               </tr>
@@ -104,6 +140,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     fullWidth
                     value={employeeData.lastName}
                     onChange={(e) => handleChange('lastName', e.target.value)}
+                    error={!!errors.lastName}
+                    helperText={errors.lastName}
                   />
                 </td>
               </tr>
@@ -115,6 +153,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     fullWidth
                     value={employeeData.username}
                     onChange={(e) => handleChange('username', e.target.value)}
+                    error={!!errors.username}
+                    helperText={errors.username}
                   />
                 </td>
               </tr>
@@ -127,6 +167,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     placeholder="Optional"
                     value={employeeData.email}
                     onChange={(e) => handleChange('email', e.target.value)}
+                    error={!!errors.email}
+                    helperText={errors.email}
                   />
                 </td>
               </tr>
@@ -137,6 +179,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     type="password"
                     value={employeeData.password}
                     onChange={(e) => handleChange("password", e.target.value)}
+                    error={!!errors.password}
+                    helperText={errors.password}
                     size="small"
                     fullWidth
                   />
@@ -150,6 +194,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     size="small"
                     value={employeeData.phone}
                     onChange={(e) => handleChange("phone", e.target.value)}
+                    error={!!errors.phone}
+                    helperText={errors.phone}
                     fullWidth
                   />
                 </td>

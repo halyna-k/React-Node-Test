@@ -7,7 +7,10 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import nodemailer from "nodemailer"
 import otpGenerator from 'otp-generator'
+import dotenv from 'dotenv'
 import Lead from '../models/lead.js'
+
+dotenv.config()
 
 export const register = async (req, res, next) => {
     try {

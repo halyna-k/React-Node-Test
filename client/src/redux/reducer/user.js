@@ -13,6 +13,7 @@ const usersSlice = createSlice({
         employees: [],
         clients: [],
         currentEmployee: null,
+        currentClient: null,
         loggedUser: Cookies.get('crm_profile') ? JSON.parse(Cookies.get('crm_profile')) : null
     },
     reducers: {
@@ -28,6 +29,7 @@ const usersSlice = createSlice({
         getEmployeesReducer: (state, action) => { state.employees = action.payload; state.allEmployees = action.payload },
         getClientsReducer: (state, action) => { state.clients = action.payload; state.allClients = action.payload },
         getUserReducer: (state, action) => { state.currentEmployee = action.payload },
+        getClientReducer: (state, action) => { state.currentClient = action.payload },
         searchUserReducer: (state, action) => {
             const { allUsers } = state;
             const { payload: searchTerm } = action;
@@ -180,6 +182,6 @@ const usersSlice = createSlice({
 
 export const { start, end, error,
     getUsersReducer, getEmployeesReducer, getClientsReducer, searchUserReducer, searchEmployeeReducer, searchClientReducer, filterUserReducer, filterEmployeeReducer, filterClientReducer,
-    registerReducer, loginReducer, logoutReducer, createClientReducer, createEmployeeReducer, getUserReducer, updateUserReducer, deleteUserReducer,
+    registerReducer, loginReducer, logoutReducer, createClientReducer, createEmployeeReducer, getUserReducer, getClientReducer,updateUserReducer, deleteUserReducer,
 } = usersSlice.actions
 export default usersSlice.reducer

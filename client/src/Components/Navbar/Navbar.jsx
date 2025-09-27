@@ -76,17 +76,17 @@ const StyledMenuItem = styled(MenuItem)(
     &:last-of-type {
       border-bottom: none;
     }
-    
+
     &.${menuItemClasses.focusVisible} {
       outline: 3px solid ${theme.palette.mode === "dark" ? blue[600] : blue[200]};
       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
     }
-  
+
     &.${menuItemClasses.disabled} {
       color: ${theme.palette.mode === "dark" ? grey[700] : grey[400]};
     }
-  
+
     &:hover:not(.${menuItemClasses.disabled}) {
       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
@@ -144,8 +144,9 @@ const Navbar = ({ setShowSidebar, showSidebar, open, setOpen }) => {
               <PiList className="text-[25px]" />
             </IconButton>
             <div>
-              <p className="text-sky-400 text-xl gap-1 flex items-center">
-                <PiTimerLight className="text-[25px]" /> {date.toLocaleTimeString()}
+              <p className="text-sky-400 text-xl gap-1 flex items-center whitespace-nowrap">
+                <PiTimerLight className="text-[25px]" />
+                {date.toLocaleTimeString(undefined, { timeZoneName: "short" })}
               </p>
             </div>
           </div>

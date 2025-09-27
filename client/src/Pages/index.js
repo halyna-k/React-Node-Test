@@ -10,6 +10,7 @@ export { default as CreateTask } from "./Tasks/CreateTask";
 export { default as Clients } from "./Users/Clients";
 export { default as Employees } from "./Users/Employees";
 export { default as CreateUser } from "./Users/CreateEmployee";
+export { default as CreateClient } from "./Users/CreateClient";
 export { default as User } from "./Users/User";
 export { default as Vouchers } from "./Vouchers/Vouchers";
 export { default as Login } from "./Auth/Login";
